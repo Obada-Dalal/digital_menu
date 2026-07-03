@@ -1,0 +1,83 @@
+.pearant {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);;
+}
+.pearant .social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  color: #9ca3af;
+  text-decoration: none;
+  padding: 15px;
+}
+.pearant .social .facebook,
+.pearant .social .insatgram {
+  font-size: 20px;
+  cursor: pointer;
+  height: 20px;
+}
+.pearant .social .facebook {
+  background: #1877f2;
+  color: white;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(24, 119, 242, 0.3);
+}
+.pearant .social .insatgram {
+  background: linear-gradient(
+    45deg,
+    #feda75,
+    #fa7e1e,
+    #d62976,
+    #962fbf,
+    #4f5bd5
+  );
+  color: white;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(214, 41, 118, 0.3);
+}
+/* ✨ أنيميشن تحميل للـ Logo */
+.logo {
+  position: relative;
+}
+
+.logo img {
+  width: 75px;
+  transition: opacity 0.5s ease;
+}
+
+/* skeleton للصورة وهي بتتحمل */
+.logo-skeleton {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ✨ أيقونات السوشيال ميديا - تأثير تحميل */
+.social-skeleton {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}

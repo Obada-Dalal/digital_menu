@@ -1,0 +1,461 @@
+/* ===== الحاوية العامة ===== */
+.menu-container {
+  padding: 40px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.menu-loading {
+  text-align: center;
+  padding: 60px;
+  font-size: 1.3rem;
+  color: #555;
+}
+
+/* ===== قسم التصنيف ===== */
+.menu-category-section {
+  margin-bottom: 50px;
+}
+
+.menu-category-title {
+  font-size: 2rem;
+  color: #fbbf24;
+  margin-bottom: 10px;
+  text-align: right;
+  font-weight: 700;
+}
+
+.menu-category-line {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to left, #e2e8f0, #fbbf24, #e2e8f0);
+  margin-bottom: 30px;
+}
+
+/* ===== شبكة المنتجات ===== */
+.menu-products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  direction: rtl;
+  align-items: stretch;
+}
+
+/* ===== بطاقة المنتج ===== */
+.menu-product-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.menu-product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* ✨ صورة المنتج */
+.menu-product-image {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* ✨ مربعة - العرض = الطول */
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.menu-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* ✨ الصورة تغطي المساحة كاملة بدون تشوه */
+}
+
+.menu-product-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.menu-product-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 6px;
+  text-align: right;
+  line-height: 1.3;
+}
+
+.menu-product-ingredients {
+  font-size: 16px;
+  color: #64748b;
+  text-align: right;
+  direction: rtl;
+  min-height: 38px;
+  /* max-height: 38px; */
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.ingredient-dot {
+  display: inline;
+}
+
+.menu-product-price-counter {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.menu-product-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #16a34a;
+}
+
+.menu-counter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f1f5f9;
+  border-radius: 30px;
+  padding: 4px;
+}
+
+.counter-btn {
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #193761;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.counter-btn:hover {
+  background: #193761;
+  color: white;
+}
+
+.counter-value {
+  min-width: 30px;
+  width: 30px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: 600;
+  color: #0f172a;
+  display: inline-block;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #64748b;
+}
+
+/* ===== استجابة للشاشات - 2 عناصر ===== */
+@media (max-width: 768px) {
+  .menu-container {
+    padding: 30px 30px;
+  }
+
+  .menu-products-grid {
+    grid-template-columns: repeat(2, 1fr); /* ✨ عنصرين */
+    gap: 15px;
+  }
+
+  .menu-category-title {
+    font-size: 1.5rem;
+  }
+
+  .menu-product-image {
+    aspect-ratio: 1 / 1; /* ✨ مربعة */
+    /* height: 300px; */
+  }
+
+  .menu-product-name {
+    font-size: 15px;
+  }
+
+  .menu-product-ingredients {
+    font-size: 12px;
+    min-height: 32px;
+    max-height: 32px;
+  }
+
+  .menu-product-price {
+    font-size: 0.95rem;
+  }
+
+  .counter-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .counter-value {
+    min-width: 26px;
+    width: 26px;
+    font-size: 16px;
+  }
+
+  .menu-product-info {
+    padding: 12px;
+  }
+}
+
+/* ===== استجابة للشاشات الصغيرة جداً - 2 عناصر ===== */
+@media (max-width: 576px) {
+  .menu-container {
+    padding: 20px 10px;
+  }
+
+  .menu-products-grid {
+    grid-template-columns: repeat(2, 1fr); /* ✨ برضه عنصرين */
+    gap: 10px;
+  }
+
+  .menu-category-title {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+  }
+
+  .menu-category-line {
+    margin-bottom: 15px;
+  }
+
+  .menu-category-section {
+    margin-bottom: 30px;
+  }
+
+  .menu-product-image {
+    aspect-ratio: 1 / 1;
+  }
+
+  .menu-product-name {
+    font-size: 17px;
+  }
+
+  .menu-product-ingredients {
+    font-size: 15px;
+    /* min-height: 28px; */
+    max-height: 28px;
+  }
+
+  .menu-product-price {
+    font-size: 0.85rem;
+  }
+
+  .counter-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+  }
+
+  .counter-value {
+    min-width: 24px;
+    width: 24px;
+    font-size: 14px;
+  }
+
+  .menu-counter {
+    gap: 4px;
+    padding: 3px;
+  }
+
+  .menu-product-info {
+    padding: 10px;
+  }
+
+  .menu-product-price-counter {
+    gap: 5px;
+  }
+}
+
+/* ===== Skeleton Loader ===== */
+.skeleton-section {
+  margin-bottom: 50px;
+}
+
+.skeleton-title {
+  width: 150px;
+  height: 35px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e0e0e0 0%, #f0f0f0 50%, #e0e0e0 100%);
+  margin-bottom: 10px;
+  margin-left: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-line {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #e0e0e0 0%, #f0f0f0 50%, #e0e0e0 100%);
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  direction: rtl;
+}
+
+.skeleton-product-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.skeleton-product-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 30%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0.4) 70%,
+    transparent 100%
+  );
+  animation: shimmer 1.8s infinite;
+  z-index: 2;
+}
+
+.skeleton-product-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(135deg, #e8e8e8 0%, #f0f0f0 50%, #e8e8e8 100%);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skeleton-product-image::before {
+  content: "🍽️";
+  font-size: 3rem;
+  opacity: 0.2;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.1);
+  }
+}
+
+.skeleton-product-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.skeleton-product-name {
+  width: 80%;
+  height: 20px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e0e0e0 0%, #f0f0f0 50%, #e0e0e0 100%);
+  margin: 0 auto 15px;
+}
+
+.skeleton-product-price-counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.skeleton-product-price {
+  width: 60px;
+  height: 22px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #e0e0e0 0%, #f0f0f0 50%, #e0e0e0 100%);
+}
+
+.skeleton-counter {
+  width: 100px;
+  height: 32px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #e0e0e0 0%, #f0f0f0 50%, #e0e0e0 100%);
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@media (max-width: 992px) {
+  .skeleton-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  .counter-btn {
+    width: 20px;
+    height: 20px;
+  }
+  .menu-counter {
+    gap: 3px;
+  }
+  .counter-value {
+    min-width: 22px;
+    width: 22px;
+  }
+}
+
+@media (max-width: 576px) {
+  .skeleton-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .skeleton-product-image {
+    aspect-ratio: 1 / 1;
+  }
+
+  .skeleton-title {
+    width: 100px;
+    height: 25px;
+  }
+}
