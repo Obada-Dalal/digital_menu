@@ -282,18 +282,17 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
     gap: 12px;
-    overflow-x: auto;
-    scroll-behavior: auto; /* ✨ تغيير من smooth إلى auto */
+    overflow-x: scroll; /* ✨ scroll بدل auto */
+    overflow-y: hidden;
+    scroll-behavior: smooth;
     cursor: grab;
     user-select: none;
-    -webkit-overflow-scrolling: touch; /* ✨ هذا المهم للحركة الطبيعية */
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: 10px 20px;
     width: 100%;
     box-sizing: border-box;
-    /* ✨ إلغاء أي animation أو transition على السكرول */
-    transition: none;
   }
 
   .categories-grid::-webkit-scrollbar {
