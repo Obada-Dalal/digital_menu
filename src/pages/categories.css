@@ -1,6 +1,6 @@
 /* ===== حاوية القسم ===== */
 .categories-section {
-  padding: 40px 20px;
+  padding: 30px 20px;
   text-align: center;
 }
 
@@ -162,19 +162,17 @@
   gap: 20px;
 }
 
-
 @media (max-width: 576px) {
   .categories-grid {
-    gap: 10px
-    ;
-  }.category-card{
+    gap: 10px;
+  }
+  .category-card {
     pad: 8px 8px;
   }
-  .modal-categories-grid{
+  .modal-categories-grid {
     gap: 5px;
   }
 }
-
 
 /* ===== ✨ Skeleton Loader للتصنيفات ===== */
 .skeleton-categories-grid {
@@ -276,4 +274,70 @@
     transparent 100%
   );
   animation: shimmer 1.8s infinite;
+}
+/* ===== سلايدر للشاشات الصغيرة ===== */
+@media (max-width: 768px) {
+  .categories-grid {
+    display: flex;
+    flex-wrap: nowrap; /* ✨ منع النزول لسطر جديد */
+    justify-content: flex-start;
+    gap: 12px;
+    overflow-x: auto; /* ✨ سكرول أفقي */
+    scroll-behavior: smooth;
+    cursor: grab;
+    user-select: none;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE */
+    padding: 10px 5px;
+  }
+
+  .categories-grid::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .categories-grid:active {
+    cursor: grabbing;
+  }
+
+  .category-card {
+    flex-shrink: 0; /* ✨ ما ينضغط */
+    width: 130px;
+    padding: 12px 8px;
+  }
+
+  .category-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .category-name {
+    font-size: 0.85rem;
+  }
+
+  .all-categories-btn {
+    padding: 10px 28px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-card {
+    width: 110px;
+    padding: 10px 6px;
+  }
+
+  .category-image {
+    width: 70px;
+    height: 70px;
+  }
+
+  .category-name {
+    font-size: 0.8rem;
+  }
+
+  .all-categories-btn {
+    padding: 8px 22px;
+    font-size: 0.9rem;
+  }
 }

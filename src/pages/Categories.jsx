@@ -1,22 +1,15 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./categories.css";
 
-// ✨ Skeleton Component للتصنيفات
 function CategoriesSkeleton() {
   return (
     <div className="categories-section">
-      {/* زر وهمي */}
       <div className="skeleton-all-btn"></div>
-
-      {/* شبكة بطاقات وهمية */}
       <div className="skeleton-categories-grid">
-        {/* بطاقة "الكل" */}
         <div className="skeleton-category-card">
           <div className="skeleton-category-image"></div>
           <div className="skeleton-category-name"></div>
         </div>
-
-        {/* 7 بطاقات وهمية إضافية */}
         {[...Array(7)].map((_, i) => (
           <div key={i} className="skeleton-category-card">
             <div className="skeleton-category-image"></div>
@@ -35,7 +28,12 @@ export default function Categories({
 }) {
   const [showModal, setShowModal] = useState(false);
 
-  // ✨ عرض Skeleton إذا كان isLoading
+  // ✨ للسلايدر باللمس
+  const sliderRef = useRef(null);
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+
   if (isLoading) {
     return <CategoriesSkeleton />;
   }
@@ -52,13 +50,65 @@ export default function Categories({
     closeModal();
   };
 
+  // ✨ دوال السحب للموبايل
+  const handleMouseDown = (e) => {
+    isDown.current = true;
+    startX.current = e.pageX - sliderRef.current.offsetLeft;
+    scrollLeft.current = sliderRef.current.scrollLeft;
+  };
+
+  const handleMouseLeave = () => {
+    isDown.current = false;
+  };
+
+  const handleMouseUp = () => {
+    isDown.current = false;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDown.current) return;
+    e.preventDefault();
+    const x = e.pageX - sliderRef.current.offsetLeft;
+    const walk = (x - startX.current) * 2;
+    sliderRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  // ✨ دوال اللمس
+  const handleTouchStart = (e) => {
+    isDown.current = true;
+    startX.current = e.touches[0].pageX - sliderRef.current.offsetLeft;
+    scrollLeft.current = sliderRef.current.scrollLeft;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDown.current) return;
+    const x = e.touches[0].pageX - sliderRef.current.offsetLeft;
+    const walk = (x - startX.current) * 2;
+    sliderRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  const handleTouchEnd = () => {
+    isDown.current = false;
+  };
+
   return (
     <div className="categories-section">
       <button className="all-categories-btn" onClick={openModal}>
         عرض كل التصنيفات
       </button>
 
-      <div className="categories-grid">
+      {/* ✨ شريط تصنيفات - شبكة في الديسكتوب، سلايدر في الموبايل */}
+      <div
+        className="categories-grid"
+        ref={sliderRef}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div
           className="category-card all-category-card"
           onClick={() => handleCategoryClick("all")}

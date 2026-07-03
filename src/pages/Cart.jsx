@@ -74,7 +74,7 @@ export default function Cart() {
 
   const handleClearCart = () => {
     if (cartItems.length === 0) {
-      showNotification(`🛒 سلة التسوق فارغة بالفعل`, "warning");
+      showNotification(` سلة التسوق فارغة بالفعل`, "warning");
     } else {
       clearCart();
       showNotification(`🗑️ تم مسح سلة التسوق بالكامل`, "error");
@@ -83,10 +83,7 @@ export default function Cart() {
 
   const handleContinueOrder = () => {
     if (cartItems.length === 0) {
-      showNotification(
-        `🛒 سلة التسوق فارغة - أضف بعض الأصناف أولاً`,
-        "warning"
-      );
+      showNotification(` سلة التسوق فارغة - أضف بعض الأصناف أولاً`, "warning");
     } else {
       openContinueModal();
     }
@@ -165,7 +162,7 @@ export default function Cart() {
                         <div className="item-text">
                           <span className="item-name">{item.name}</span>
                           <span className="item-calculation">
-                            SY {item.price} × {item.quantity} = <b/>
+                            SY {item.price} × {item.quantity} = <b />
                             {item.price * item.quantity} SY
                           </span>
                           {/* ✨ عرض المكونات في السلة */}

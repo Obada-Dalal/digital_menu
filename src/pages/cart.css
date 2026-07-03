@@ -142,8 +142,12 @@
   flex-basis: 80%;
 }
 .buttons-modal-cart .whatsapp {
-  text-align: right;
+  /* text-align: right; */
   padding-right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
 .buttons-modal-cart .delete-cart-items {
@@ -232,7 +236,7 @@
   font-size: 14px;
   color: #64748b;
   direction: rtl;
-  margin-top: 2px;
+  /* margin-top: 2px; */
 }
 /* منطقة العداد والحذف */
 .item-actions {
@@ -403,17 +407,17 @@
     height: 40px;
   }
   .item-name {
-    font-size: 0.85rem;
+    font-size: 14px;
   }
   .item-calculation {
-    font-size: 0.75rem;
+    font-size: 13px;
   }
   .counter-btn {
     width: 24px;
     height: 24px;
     font-size: 0.9rem;
   }
-    .cart-icon {
+  .cart-icon {
     right: 20px;
     bottom: 20px;
   }

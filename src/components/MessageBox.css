@@ -2,26 +2,26 @@
 .message-box-container {
   position: fixed;
   top: 20px;
-  right: 20px;
+  right: 3px;
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
 .message-box {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 15px 20px;
+  padding: 10px 15px;
   border-radius: 8px;
   background: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  
+
   /* ✨ الأنيميشن الجديد - شامل الدخول والخروج */
   animation: slideInAndOut 3s ease-in-out forwards;
   -webkit-animation: slideInAndOut 3s ease-in-out forwards;
-  
+
   cursor: pointer;
   min-width: 300px;
 }
