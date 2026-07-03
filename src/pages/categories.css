@@ -293,7 +293,6 @@
     width: 100%; /* ✨ عرض كامل */
     box-sizing: border-box;
     /* ✨ سناب للسحب */
-    scroll-snap-type: x mandatory;
   }
 
   .categories-grid::-webkit-scrollbar {
@@ -308,7 +307,6 @@
     flex-shrink: 0;
     width: 130px;
     padding: 12px 8px;
-    scroll-snap-align: center; /* ✨ يثبت في المنتصف بعد السحب */
   }
 
   .category-image {
