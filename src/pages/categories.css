@@ -282,9 +282,8 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
     gap: 12px;
-    overflow-x: scroll; /* ✨ scroll بدل auto */
+    overflow-x: scroll;
     overflow-y: hidden;
-    scroll-behavior: smooth;
     cursor: grab;
     user-select: none;
     -webkit-overflow-scrolling: touch;
