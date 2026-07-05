@@ -5,11 +5,11 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
 
-  // دالة لإضافة منتج للسلة - ✨ تدعم الأحجام
+  // إضافة منتج للسلة
   const addToCart = useCallback((product, selectedSize = null) => {
     setCartItems((prev) => {
       if (selectedSize) {
-        // منتج مع حجم محدد - استخدم sizeId للمقارنة
+        // منتج مع حجم - قارن بالـ id والحجم
         const existing = prev.find(
           (item) =>
             item._id === product._id &&
@@ -29,7 +29,7 @@ export function CartProvider({ children }) {
             ...product,
             quantity: 1,
             selectedSize: selectedSize,
-            price: selectedSize.price // السعر حسب الحجم
+            price: selectedSize.price
           }
         ];
       } else {
@@ -49,10 +49,11 @@ export function CartProvider({ children }) {
     });
   }, []);
 
-  // دالة إنقاص الكمية أو حذف المنتج إذا أصبحت 0
+  // إنقاص الكمية
   const removeFromCart = useCallback((productId, selectedSize = null) => {
     setCartItems((prev) => {
-      const existing = prev.find((item) => {
+      // ابحث عن العنصر المطلوب
+      const existingIndex = prev.findIndex((item) => {
         if (selectedSize) {
           return (
             item._id === productId &&
@@ -62,28 +63,23 @@ export function CartProvider({ children }) {
         return item._id === productId && !item.selectedSize;
       });
 
-      if (existing && existing.quantity > 1) {
-        return prev.map((item) => {
-          const isMatch = selectedSize
-            ? item._id === productId &&
-              item.selectedSize?.name === selectedSize.name
-            : item._id === productId && !item.selectedSize;
-          return isMatch ? { ...item, quantity: item.quantity - 1 } : item;
-        });
+      if (existingIndex === -1) return prev;
+
+      const existing = prev[existingIndex];
+
+      if (existing.quantity > 1) {
+        // قلل الكمية
+        return prev.map((item, i) =>
+          i === existingIndex ? { ...item, quantity: item.quantity - 1 } : item
+        );
+      } else {
+        // احذف العنصر
+        return prev.filter((_, i) => i !== existingIndex);
       }
-      return prev.filter((item) => {
-        if (selectedSize) {
-          return !(
-            item._id === productId &&
-            item.selectedSize?.name === selectedSize.name
-          );
-        }
-        return !(item._id === productId && !item.selectedSize);
-      });
     });
   }, []);
 
-  // حذف منتج محدد كلياً
+  // حذف منتج كلياً
   const deleteItem = useCallback((productId, selectedSize = null) => {
     setCartItems((prev) =>
       prev.filter((item) => {
@@ -98,18 +94,16 @@ export function CartProvider({ children }) {
     );
   }, []);
 
-  // مسح السلة بالكامل
+  // مسح السلة
   const clearCart = useCallback(() => {
     setCartItems([]);
   }, []);
 
-  // حساب المجموع الكلي
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
-  // عدد المنتجات في السلة
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
