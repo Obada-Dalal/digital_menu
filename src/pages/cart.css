@@ -391,6 +391,19 @@
 .cart-counter .cart {
   font-size: 14px;
 }
+
+/* ✨ شارة الحجم في السلة */
+.item-size-badge {
+  display: inline-block;
+  background: #d1fae5;
+  color: #065f46;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
 @media (max-width: 992px) {
   .cart-icon {
     right: 60px;

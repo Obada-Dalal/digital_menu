@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
-import { useNotification } from "../context/NotificationContext"; // ✨ أضفنا
+import { useNotification } from "../context/NotificationContext";
 import { FaShoppingCart, FaTrash } from "react-icons/fa";
 import "./cart.css";
-
-// Icons
 import { FaCar } from "react-icons/fa";
 import { IoIosRestaurant } from "react-icons/io";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -17,15 +15,14 @@ export default function Cart() {
     totalPrice,
     cartCount,
     addToCart,
-    removeFromCart
+    removeFromCart,
+    getCartItemKey
   } = useCart();
 
-  const { showNotification } = useNotification(); // ✨ أضفنا
+  const { showNotification } = useNotification();
 
   const [showModal, setShowModal] = useState(false);
   const [showContinueModal, setShowContinueModal] = useState(false);
-
-  // حالات الفورم في مودال المتابعة
   const [orderType, setOrderType] = useState("dine-in");
   const [tableNumber, setTableNumber] = useState("");
   const [contactInfo, setContactInfo] = useState("");
@@ -43,33 +40,64 @@ export default function Cart() {
     setShowModal(true);
   };
 
-  // ✨ دوال الإشعارات
+  // ✨ إضافة للسلة مع دعم الأحجام
   const handleCartAdd = (item) => {
-    addToCart(item);
-    const currentItem = cartItems.find((i) => i._id === item._id);
-    const qty = currentItem ? currentItem.quantity + 1 : 1;
-    showNotification(` ${item.name} (الكمية: ${qty})`, "success");
+    if (item.selectedSize) {
+      addToCart(item, item.selectedSize);
+      const currentItem = cartItems.find(
+        (i) =>
+          i._id === item._id && i.selectedSize?.name === item.selectedSize.name
+      );
+      const qty = currentItem ? currentItem.quantity + 1 : 1;
+      showNotification(
+        ` ${item.name} (${item.selectedSize.name}) (الكمية: ${qty})`,
+        "success"
+      );
+    } else {
+      addToCart(item);
+      const currentItem = cartItems.find(
+        (i) => i._id === item._id && !i.selectedSize
+      );
+      const qty = currentItem ? currentItem.quantity + 1 : 1;
+      showNotification(` ${item.name} (الكمية: ${qty})`, "success");
+    }
   };
 
+  // ✨ إنقاص من السلة مع دعم الأحجام
   const handleCartRemove = (item) => {
-    const currentItem = cartItems.find((i) => i._id === item._id);
+    const currentItem = cartItems.find((i) => {
+      if (item.selectedSize) {
+        return (
+          i._id === item._id && i.selectedSize?.name === item.selectedSize.name
+        );
+      }
+      return i._id === item._id && !i.selectedSize;
+    });
+
     if (!currentItem) return;
 
-    removeFromCart(item._id);
+    removeFromCart(item._id, item.selectedSize || null);
 
     if (currentItem.quantity === 1) {
-      showNotification(` ${item.name} تم الحذف من السلة`, "error");
+      showNotification(
+        ` ${item.name}${item.selectedSize ? ` (${item.selectedSize.name})` : ""} تم الحذف من السلة`,
+        "error"
+      );
     } else {
       showNotification(
-        ` ${item.name} (الكمية: ${currentItem.quantity - 1})`,
+        ` ${item.name}${item.selectedSize ? ` (${item.selectedSize.name})` : ""} (الكمية: ${currentItem.quantity - 1})`,
         "warning"
       );
     }
   };
 
+  // ✨ حذف نهائي مع دعم الأحجام
   const handleDeleteItem = (item) => {
-    deleteItem(item._id);
-    showNotification(`🗑️ ${item.name} تم حذفه نهائياً`, "error");
+    deleteItem(item._id, item.selectedSize || null);
+    showNotification(
+      ` ${item.name}${item.selectedSize ? ` (${item.selectedSize.name})` : ""} تم حذفه نهائياً`,
+      "error"
+    );
   };
 
   const handleClearCart = () => {
@@ -89,7 +117,6 @@ export default function Cart() {
     }
   };
 
-  // دالة إرسال الطلب عبر واتساب
   const handleSendWhatsApp = () => {
     const restaurantNumber = "+963947584270";
     let message = `🍔 *طلب جديد* 🍔\n\n`;
@@ -105,7 +132,8 @@ export default function Cart() {
     }
     message += `\n📋 *الأصناف المطلوبة:*\n`;
     cartItems.forEach((item) => {
-      message += `- ${item.name} (x${item.quantity}) - ${item.price * item.quantity} SY\n`;
+      const sizeText = item.selectedSize ? ` (${item.selectedSize.name})` : "";
+      message += `- ${item.name}${sizeText} (x${item.quantity}) - ${item.price * item.quantity} SY\n`;
     });
     message += `\n💰 *المجموع الكلي:* ${totalPrice} SY`;
 
@@ -125,7 +153,6 @@ export default function Cart() {
         </button>
       </div>
 
-      {/* مودال السلة */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-cart">
@@ -152,7 +179,7 @@ export default function Cart() {
               ) : (
                 <ul className="cart-items-list">
                   {cartItems.map((item) => (
-                    <li key={item._id} className="cart-item-row">
+                    <li key={getCartItemKey(item)} className="cart-item-row">
                       <div className="item-details">
                         <img
                           src={item.imageUrl}
@@ -160,12 +187,19 @@ export default function Cart() {
                           className="item-image"
                         />
                         <div className="item-text">
-                          <span className="item-name">{item.name}</span>
+                          <span className="item-name">
+                            {item.name}
+                            {/* ✨ عرض الحجم المختار */}
+                            {item.selectedSize && (
+                              <span className="item-size-badge">
+                                {item.selectedSize.name}
+                              </span>
+                            )}
+                          </span>
                           <span className="item-calculation">
                             SY {item.price} × {item.quantity} = <b />
                             {item.price * item.quantity} SY
                           </span>
-                          {/* ✨ عرض المكونات في السلة */}
                           {item.ingredients && item.ingredients.length > 0 && (
                             <span className="item-ingredients">
                               {item.ingredients.join(" • ")}
@@ -177,7 +211,7 @@ export default function Cart() {
                         <div className="cart-counter">
                           <button
                             className="counter-btn cart"
-                            onClick={() => handleCartRemove(item)} // ✨ تعديل
+                            onClick={() => handleCartRemove(item)}
                           >
                             −
                           </button>
@@ -186,14 +220,14 @@ export default function Cart() {
                           </span>
                           <button
                             className="counter-btn cart"
-                            onClick={() => handleCartAdd(item)} // ✨ تعديل
+                            onClick={() => handleCartAdd(item)}
                           >
                             +
                           </button>
                         </div>
                         <button
                           className="item-delete"
-                          onClick={() => handleDeleteItem(item)} // ✨ تعديل
+                          onClick={() => handleDeleteItem(item)}
                         >
                           <FaTrash />
                         </button>
@@ -209,16 +243,10 @@ export default function Cart() {
             </div>
 
             <div className="buttons-modal-cart">
-              <button
-                className="continue"
-                onClick={handleContinueOrder} // ✨ تعديل
-              >
+              <button className="continue" onClick={handleContinueOrder}>
                 متابعة الطلب
               </button>
-              <button
-                className="delete-cart-items"
-                onClick={handleClearCart} // ✨ تعديل
-              >
+              <button className="delete-cart-items" onClick={handleClearCart}>
                 مسح السلة
               </button>
             </div>
@@ -226,7 +254,6 @@ export default function Cart() {
         </div>
       )}
 
-      {/* مودال متابعة الطلب */}
       {showContinueModal && (
         <div className="modal-overlay">
           <div className="modal-Continue">

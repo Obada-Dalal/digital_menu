@@ -2,6 +2,14 @@ import { createContext, useContext, useState, useCallback } from "react";
 
 const CartContext = createContext();
 
+// ✨ دالة لتوليد مفتاح فريد لكل عنصر في السلة
+const getCartItemKey = (item) => {
+  if (item.selectedSize) {
+    return `${item._id}_${item.selectedSize.name}`;
+  }
+  return item._id;
+};
+
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
 
@@ -9,16 +17,14 @@ export function CartProvider({ children }) {
   const addToCart = useCallback((product, selectedSize = null) => {
     setCartItems((prev) => {
       if (selectedSize) {
-        // منتج مع حجم - قارن بالـ id والحجم
-        const existing = prev.find(
+        const existingIndex = prev.findIndex(
           (item) =>
             item._id === product._id &&
             item.selectedSize?.name === selectedSize.name
         );
-        if (existing) {
-          return prev.map((item) =>
-            item._id === product._id &&
-            item.selectedSize?.name === selectedSize.name
+        if (existingIndex !== -1) {
+          return prev.map((item, i) =>
+            i === existingIndex
               ? { ...item, quantity: item.quantity + 1 }
               : item
           );
@@ -27,24 +33,36 @@ export function CartProvider({ children }) {
           ...prev,
           {
             ...product,
+            _id: product._id,
+            name: product.name,
+            imageUrl: product.imageUrl,
             quantity: 1,
             selectedSize: selectedSize,
             price: selectedSize.price
           }
         ];
       } else {
-        // منتج بدون حجم
-        const existing = prev.find(
+        const existingIndex = prev.findIndex(
           (item) => item._id === product._id && !item.selectedSize
         );
-        if (existing) {
-          return prev.map((item) =>
-            item._id === product._id && !item.selectedSize
+        if (existingIndex !== -1) {
+          return prev.map((item, i) =>
+            i === existingIndex
               ? { ...item, quantity: item.quantity + 1 }
               : item
           );
         }
-        return [...prev, { ...product, quantity: 1 }];
+        return [
+          ...prev,
+          {
+            ...product,
+            _id: product._id,
+            name: product.name,
+            imageUrl: product.imageUrl,
+            quantity: 1,
+            price: product.price
+          }
+        ];
       }
     });
   }, []);
@@ -52,7 +70,6 @@ export function CartProvider({ children }) {
   // إنقاص الكمية
   const removeFromCart = useCallback((productId, selectedSize = null) => {
     setCartItems((prev) => {
-      // ابحث عن العنصر المطلوب
       const existingIndex = prev.findIndex((item) => {
         if (selectedSize) {
           return (
@@ -68,12 +85,10 @@ export function CartProvider({ children }) {
       const existing = prev[existingIndex];
 
       if (existing.quantity > 1) {
-        // قلل الكمية
         return prev.map((item, i) =>
           i === existingIndex ? { ...item, quantity: item.quantity - 1 } : item
         );
       } else {
-        // احذف العنصر
         return prev.filter((_, i) => i !== existingIndex);
       }
     });
@@ -115,7 +130,8 @@ export function CartProvider({ children }) {
         deleteItem,
         clearCart,
         totalPrice,
-        cartCount
+        cartCount,
+        getCartItemKey
       }}
     >
       {children}
